@@ -1,11 +1,10 @@
-import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { z } from "zod";
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
 // Allowed origins for CORS - production and preview domains
 const ALLOWED_ORIGINS = [
-  "https://dao-xanh-spark.lovable.app",
+  "https://daoxanh-web.vercel.app",
   "https://id-preview--9d9b0256-de85-42e2-bb2b-dd6b69e11cbb.lovable.app",
   "http://localhost:5173",
   "http://localhost:8080",
@@ -235,7 +234,7 @@ const handler = async (req: Request): Promise<Response> => {
       return new Response(
         JSON.stringify({ 
           error: "Dữ liệu không hợp lệ", 
-          details: parseResult.error.errors.map(e => e.message) 
+          details: parseResult.error.errors.map((e: any) => e.message) 
         }),
         {
           status: 400,
@@ -444,4 +443,4 @@ const handler = async (req: Request): Promise<Response> => {
   }
 };
 
-serve(handler);
+export default handler;

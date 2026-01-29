@@ -3,9 +3,9 @@ import { supabase } from '@/integrations/supabase/client';
 
 export interface ComboPackage {
   id: string;
-  slug: string;
   name: string;
   subtitle: string | null;
+  slug: string | null;
   price_adult: number;
   price_child: number | null;
   includes: string[];
@@ -17,8 +17,8 @@ export interface ComboPackage {
 
 export interface DayTripPackage {
   id: string;
-  slug: string;
   name: string;
+  slug: string | null;
   price_adult: number;
   price_child: number | null;
   includes: string[];
@@ -59,5 +59,43 @@ export function useDayTripPackages() {
       return data as DayTripPackage[];
     },
     staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+}
+
+export function useComboPackageBySlug(slug: string) {
+  return useQuery({
+    queryKey: ['combo-package', slug],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('combo_packages')
+        .select('*')
+        .eq('slug', slug)
+        .eq('published', true)
+        .single();
+      
+      if (error) throw error;
+      return data as ComboPackage;
+    },
+    enabled: !!slug,
+    staleTime: 10 * 60 * 1000,
+  });
+}
+
+export function useDayTripPackageBySlug(slug: string) {
+  return useQuery({
+    queryKey: ['daytrip-package', slug],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('day_trip_packages')
+        .select('*')
+        .eq('slug', slug)
+        .eq('published', true)
+        .single();
+      
+      if (error) throw error;
+      return data as DayTripPackage;
+    },
+    enabled: !!slug,
+    staleTime: 10 * 60 * 1000,
   });
 }

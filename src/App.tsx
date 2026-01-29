@@ -14,12 +14,12 @@ import Index from "./pages/Index";
 // Lazy load non-critical pages for better initial load
 const About = lazy(() => import("./pages/About"));
 const Services = lazy(() => import("./pages/Services"));
-const ComboDetail = lazy(() => import("./pages/ComboDetail"));
 const Gallery = lazy(() => import("./pages/Gallery"));
-const DayTripDetail = lazy(() => import("./pages/DayTripDetail"));
 const Blog = lazy(() => import("./pages/Blog"));
 const ArticleDetail = lazy(() => import("./pages/ArticleDetail"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const ComboPackageDetail = lazy(() => import("./pages/ComboPackageDetail"));
+const DayTripPackageDetail = lazy(() => import("./pages/DayTripPackageDetail"));
 const Booking = lazy(() => import("./pages/Booking"));
 const Directions = lazy(() => import("./pages/Directions"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -29,7 +29,7 @@ const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const BlogList = lazy(() => import("./pages/admin/BlogList"));
 const BlogEditor = lazy(() => import("./pages/admin/BlogEditor"));
 const AccommodationList = lazy(() => import("./pages/admin/AccommodationList"));
-const AccommodationEditor = lazy(() => import("./pages/admin/AccomodationEditor"));
+const AccommodationEditor = lazy(() => import("./pages/admin/AccommodationEditor"));
 const PackageManager = lazy(() => import("./pages/admin/PackageManager"));
 
 // Loading fallback component
@@ -65,12 +65,12 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/gioi-thieu" element={<About />} />
               <Route path="/dich-vu" element={<Services />} />
-              <Route path="/dich-vu/combo/:slug" element={<ComboDetail />} />
-              <Route path="/dich-vu/daytrip/:slug" element={<DayTripDetail />} />
               <Route path="/thu-vien" element={<Gallery />} />
               <Route path="/tin-tuc" element={<Blog />} />
               <Route path="/tin-tuc/:slug" element={<BlogPost />} />
               <Route path="/luu-tru/:slug" element={<ArticleDetail />} />
+              <Route path="/combo/:slug" element={<ComboPackageDetail />} />
+              <Route path="/trai-nghiem/:slug" element={<DayTripPackageDetail />} />
               <Route path="/dat-phong" element={<Booking />} />
               <Route path="/chi-duong" element={<Directions />} />
             

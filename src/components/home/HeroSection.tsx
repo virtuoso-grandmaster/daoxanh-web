@@ -40,7 +40,7 @@ export function HeroSection() {
             alt="Đảo Xanh Resort" 
             className={`w-full h-full object-cover transition-opacity duration-700 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             loading="eager"
-            fetchpriority="high"
+            fetchPriority="high"
             decoding="sync"
             onLoad={() => setImageLoaded(true)}
           />

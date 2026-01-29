@@ -81,7 +81,7 @@ export function HeroSection() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
-                className="text-lg md:text-xl text-white/80 font-light mb-10 max-w-2xl mx-auto leading-relaxed"
+                className="text-lg md:text-xl text-white/80 font-light mb-10 max-w-xl mx-auto leading-relaxed"
               >
                 {t.hero.description}
               </motion.p>

@@ -100,7 +100,7 @@ export function ExperienceSection() {
           className="text-center border-t border-white/10 pt-14 lg:pt-16"
         >
           <div className="w-16 h-0.5 bg-accent/60 mx-auto mb-10" />
-          <blockquote className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-serif text-white/90 max-w-4xl mx-auto leading-relaxed italic px-4">
+          <blockquote className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-serif text-white/90 max-w-xl mx-auto leading-relaxed italic px-4">
             "{t.experience.quote}{" "}
             <span className="text-accent not-italic font-semibold">{t.experience.quoteHighlight}</span>"
           </blockquote>

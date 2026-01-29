@@ -54,7 +54,7 @@ export function CTASection() {
                 </Button>
               </Link>
               <Link to="/gioi-thieu">
-                <Button variant="outline" size="lg" className="h-14 text-white border-white/30 hover:bg-white/10">
+                <Button variant="outline" size="lg" className="h-14 text-white border-white/30 hover:bg-white/10 bg-transparent">
                   {t.cta.learnMore}
                 </Button>
               </Link>

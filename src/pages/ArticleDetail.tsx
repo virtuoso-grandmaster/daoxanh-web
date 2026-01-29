@@ -3,7 +3,20 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Users, Bed, Wifi, Wind, Bath, Coffee, Check, MapPin, Star, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Users,
+  Bed,
+  Wifi,
+  Wind,
+  Bath,
+  Coffee,
+  Check,
+  MapPin,
+  Star,
+  Loader2,
+} from "lucide-react";
 import { useAccommodation, useAccommodations } from "@/hooks/useAccommodations";
 
 // Import hình ảnh lưu trú (for fallback)
@@ -15,63 +28,92 @@ import nhaAnHoaImage from "@/assets/accommodation/nha-an-hoa.jpg";
 import leuSerepokImage from "@/assets/accommodation/leu-serepok.jpg";
 
 // Static fallback data
-const staticAccommodations: Record<string, {
-  name: string;
-  subtitle: string;
-  description: string;
-  long_description: string;
-  image_url: string;
-  capacity: string;
-  price_original: number;
-  price_discounted: number;
-  unit: string;
-  amenities: string[];
-  highlights: string[];
-  location: string;
-  rating: number;
-}> = {
+const staticAccommodations: Record<
+  string,
+  {
+    name: string;
+    subtitle: string;
+    description: string;
+    long_description: string;
+    image_url: string;
+    capacity: string;
+    price_original: number;
+    price_discounted: number;
+    unit: string;
+    amenities: string[];
+    highlights: string[];
+    location: string;
+    rating: number;
+  }
+> = {
   "lan-la-hanh-ngo": {
     name: "Lán lá Hạnh Ngộ",
     subtitle: "Cắm trại lều trong lán, view sông, gắn kết thiên nhiên",
-    description: "Trải nghiệm cắm trại độc đáo trong lán lá truyền thống với view sông thơ mộng.",
-    long_description: "Lán lá Hạnh Ngộ là không gian cắm trại độc đáo được thiết kế theo phong cách truyền thống của đồng bào Tây Nguyên. Mái lán được lợp bằng lá cọ tự nhiên, tạo nên không gian mát mẻ và gần gũi với thiên nhiên.\n\nNằm bên bờ sông Sê Rê Pôk, bạn sẽ được đắm mình trong tiếng nước chảy róc rách, tiếng chim hót và không khí trong lành của núi rừng.",
+    description:
+      "Trải nghiệm cắm trại độc đáo trong lán lá truyền thống với view sông thơ mộng.",
+    long_description:
+      "Lán lá Hạnh Ngộ là không gian cắm trại độc đáo được thiết kế theo phong cách truyền thống của đồng bào Tây Nguyên. Mái lán được lợp bằng lá cọ tự nhiên, tạo nên không gian mát mẻ và gần gũi với thiên nhiên.\n\nNằm bên bờ sông Sê Rê Pôk, bạn sẽ được đắm mình trong tiếng nước chảy róc rách, tiếng chim hót và không khí trong lành của núi rừng.",
     image_url: lanLaHanhNgoImage,
     capacity: "1-2 khách/lều",
     price_original: 480000,
     price_discounted: 336000,
     unit: "lều/đêm",
     amenities: ["1-2 khách", "Lều + nệm êm", "WC riêng gần đó", "Bữa sáng"],
-    highlights: ["View sông Sê Rê Pôk tuyệt đẹp", "Không gian yên tĩnh", "Lều camping chất lượng cao", "Khu vực đốt lửa trại"],
+    highlights: [
+      "View sông Sê Rê Pôk tuyệt đẹp",
+      "Không gian yên tĩnh",
+      "Lều camping chất lượng cao",
+      "Khu vực đốt lửa trại",
+    ],
     location: "Khu vực bờ sông, Đảo Xanh Ecofarm",
     rating: 4.7,
   },
   "homestay-an-yen": {
     name: "Homestay An Yên",
     subtitle: "Nhà sàn, vách gỗ, mái cọ, view sông dưới tán dừa",
-    description: "Nhà sàn truyền thống với vách gỗ và mái cọ, mang đến không gian an yên.",
-    long_description: "Homestay An Yên là nhà sàn truyền thống được xây dựng theo lối kiến trúc dân gian Tây Nguyên. Vách gỗ tự nhiên, mái lợp lá cọ tạo nên không gian mộc mạc, ấm cúng.",
+    description:
+      "Nhà sàn truyền thống với vách gỗ và mái cọ, mang đến không gian an yên.",
+    long_description:
+      "Homestay An Yên là nhà sàn truyền thống được xây dựng theo lối kiến trúc dân gian Tây Nguyên. Vách gỗ tự nhiên, mái lợp lá cọ tạo nên không gian mộc mạc, ấm cúng.",
     image_url: homestayAnYenImage,
     capacity: "2 khách/phòng",
     price_original: 1000000,
     price_discounted: 700000,
     unit: "phòng/đêm",
     amenities: ["2 khách", "Giường đôi", "Quạt máy", "WC riêng", "Bữa sáng"],
-    highlights: ["Nhà sàn truyền thống Tây Nguyên", "View sông và vườn dừa", "Không gian yên tĩnh"],
+    highlights: [
+      "Nhà sàn truyền thống Tây Nguyên",
+      "View sông và vườn dừa",
+      "Không gian yên tĩnh",
+    ],
     location: "Khu vực vườn dừa, Đảo Xanh Ecofarm",
     rating: 4.8,
   },
   "bungalow-an-binh": {
     name: "Bungalow An Bình",
     subtitle: "Nhà gỗ độc đáo, view sông, yên tĩnh, sang trọng",
-    description: "Bungalow cao cấp với thiết kế gỗ độc đáo, mang đến không gian sang trọng.",
-    long_description: "Bungalow An Bình là lựa chọn cao cấp nhất tại Đảo Xanh Ecofarm. Được xây dựng hoàn toàn bằng gỗ tự nhiên.",
+    description:
+      "Bungalow cao cấp với thiết kế gỗ độc đáo, mang đến không gian sang trọng.",
+    long_description:
+      "Bungalow An Bình là lựa chọn cao cấp nhất tại Đảo Xanh Ecofarm. Được xây dựng hoàn toàn bằng gỗ tự nhiên.",
     image_url: bungalowAnBinhImage,
     capacity: "2 khách/căn",
     price_original: 1900000,
     price_discounted: 1330000,
     unit: "căn/đêm",
-    amenities: ["2 khách", "Giường King", "Máy lạnh", "Wifi miễn phí", "WC riêng + bồn tắm", "Minibar + Bữa sáng"],
-    highlights: ["Thiết kế gỗ cao cấp", "View sông panorama", "Tiện nghi 4 sao"],
+    amenities: [
+      "2 khách",
+      "Giường King",
+      "Máy lạnh",
+      "Wifi miễn phí",
+      "WC riêng + bồn tắm",
+      "Minibar + Bữa sáng",
+    ],
+    highlights: [
+      "Thiết kế gỗ cao cấp",
+      "View sông panorama",
+      "Tiện nghi 4 sao",
+    ],
     location: "Khu vực VIP ven sông, Đảo Xanh Ecofarm",
     rating: 4.9,
   },
@@ -79,44 +121,81 @@ const staticAccommodations: Record<string, {
     name: "Nhà Thảnh Thơi",
     subtitle: "Family hotel, view vườn thoáng mát, 18-20 khách",
     description: "Không gian rộng rãi phù hợp cho gia đình lớn hoặc nhóm bạn.",
-    long_description: "Nhà Thảnh Thơi là khu nhà nghỉ dành riêng cho gia đình lớn hoặc nhóm bạn. Với sức chứa lên đến 18-20 khách.",
+    long_description:
+      "Nhà Thảnh Thơi là khu nhà nghỉ dành riêng cho gia đình lớn hoặc nhóm bạn. Với sức chứa lên đến 18-20 khách.",
     image_url: nhaThanhThoiImage,
     capacity: "18-20 khách",
     price_original: 1300000,
     price_discounted: 910000,
     unit: "phòng/đêm",
-    amenities: ["18-20 khách", "Nhiều giường", "Máy lạnh", "Wifi miễn phí", "WC riêng", "Bếp + Bữa sáng"],
-    highlights: ["Sức chứa lớn", "View vườn cây xanh mát", "Phòng khách chung rộng"],
+    amenities: [
+      "18-20 khách",
+      "Nhiều giường",
+      "Máy lạnh",
+      "Wifi miễn phí",
+      "WC riêng",
+      "Bếp + Bữa sáng",
+    ],
+    highlights: [
+      "Sức chứa lớn",
+      "View vườn cây xanh mát",
+      "Phòng khách chung rộng",
+    ],
     location: "Khu vực vườn cây, Đảo Xanh Ecofarm",
     rating: 4.6,
   },
   "nha-an-hoa": {
     name: "Nhà An Hòa",
     subtitle: "Phong cách tân cổ điển, tiện nghi, gần trung tâm",
-    description: "Nhà nghỉ phong cách tân cổ điển với đầy đủ tiện nghi hiện đại.",
-    long_description: "Nhà An Hòa mang phong cách kiến trúc tân cổ điển, kết hợp giữa vẻ đẹp truyền thống và sự tiện nghi hiện đại.",
+    description:
+      "Nhà nghỉ phong cách tân cổ điển với đầy đủ tiện nghi hiện đại.",
+    long_description:
+      "Nhà An Hòa mang phong cách kiến trúc tân cổ điển, kết hợp giữa vẻ đẹp truyền thống và sự tiện nghi hiện đại.",
     image_url: nhaAnHoaImage,
     capacity: "2 khách/phòng",
     price_original: 1300000,
     price_discounted: 910000,
     unit: "phòng/đêm",
-    amenities: ["2 khách", "Giường đôi", "Máy lạnh", "Wifi miễn phí", "WC riêng", "Minibar + Bữa sáng"],
-    highlights: ["Kiến trúc tân cổ điển", "Gần khu trung tâm", "Tiện nghi đầy đủ"],
+    amenities: [
+      "2 khách",
+      "Giường đôi",
+      "Máy lạnh",
+      "Wifi miễn phí",
+      "WC riêng",
+      "Minibar + Bữa sáng",
+    ],
+    highlights: [
+      "Kiến trúc tân cổ điển",
+      "Gần khu trung tâm",
+      "Tiện nghi đầy đủ",
+    ],
     location: "Khu trung tâm, Đảo Xanh Ecofarm",
     rating: 4.7,
   },
   "leu-serepok": {
     name: "Lều Sê Rê Pôk",
     subtitle: "Glamping cao cấp, như khách sạn 4 sao, lãng mạn",
-    description: "Trải nghiệm glamping sang trọng với tiện nghi như khách sạn 4 sao.",
-    long_description: "Lều Sê Rê Pôk là đỉnh cao của trải nghiệm glamping tại Đảo Xanh. Mỗi lều được thiết kế như một phòng khách sạn 4 sao di động.",
+    description:
+      "Trải nghiệm glamping sang trọng với tiện nghi như khách sạn 4 sao.",
+    long_description:
+      "Lều Sê Rê Pôk là đỉnh cao của trải nghiệm glamping tại Đảo Xanh. Mỗi lều được thiết kế như một phòng khách sạn 4 sao di động.",
     image_url: leuSerepokImage,
     capacity: "2 khách/lều",
     price_original: 1200000,
     price_discounted: 840000,
     unit: "lều/đêm",
-    amenities: ["2 khách", "Giường King", "Máy lạnh", "WC riêng", "Minibar + Bữa sáng"],
-    highlights: ["Glamping cao cấp 4 sao", "View cánh đồng và sao trời", "Không gian lãng mạn"],
+    amenities: [
+      "2 khách",
+      "Giường King",
+      "Máy lạnh",
+      "WC riêng",
+      "Minibar + Bữa sáng",
+    ],
+    highlights: [
+      "Glamping cao cấp 4 sao",
+      "View cánh đồng và sao trời",
+      "Không gian lãng mạn",
+    ],
     location: "Khu vực cánh đồng, Đảo Xanh Ecofarm",
     rating: 4.9,
   },
@@ -125,29 +204,33 @@ const staticAccommodations: Record<string, {
 const ArticleDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  
+
   const { data: dbArticle, isLoading } = useAccommodation(slug);
   const { data: allAccommodations } = useAccommodations();
-  
+
   // Use database data if available, otherwise fallback to static
   const article = dbArticle || (slug ? staticAccommodations[slug] : null);
-  
+
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('vi-VN').format(price);
+    return new Intl.NumberFormat("vi-VN").format(price);
   };
 
   const getImageUrl = (imageUrl: string | null | undefined, slug?: string) => {
-    if (imageUrl?.startsWith('http')) return imageUrl;
+    if (imageUrl?.startsWith("http")) return imageUrl;
     if (imageUrl) return imageUrl;
     // Fallback by slug
-    if (slug && staticAccommodations[slug]) return staticAccommodations[slug].image_url;
+    if (slug && staticAccommodations[slug])
+      return staticAccommodations[slug].image_url;
     return lanLaHanhNgoImage;
   };
 
   // Get other accommodations
   const otherAccommodations = allAccommodations
-    ? allAccommodations.filter(a => a.slug !== slug).slice(0, 3)
-    : Object.entries(staticAccommodations).filter(([key]) => key !== slug).slice(0, 3).map(([key, val]) => ({ ...val, slug: key }));
+    ? allAccommodations.filter((a) => a.slug !== slug).slice(0, 3)
+    : Object.entries(staticAccommodations)
+        .filter(([key]) => key !== slug)
+        .slice(0, 3)
+        .map(([key, val]) => ({ ...val, slug: key }));
 
   if (isLoading) {
     return (
@@ -160,14 +243,16 @@ const ArticleDetail = () => {
       </div>
     );
   }
-  
+
   if (!article) {
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
         <main className="pt-32 pb-20">
           <div className="container-wide text-center">
-            <h1 className="heading-section text-foreground mb-6">Không tìm thấy bài viết</h1>
+            <h1 className="heading-section text-foreground mb-6">
+              Không tìm thấy bài viết
+            </h1>
             <p className="body-regular text-muted-foreground mb-8">
               Bài viết bạn đang tìm không tồn tại hoặc đã bị xóa.
             </p>
@@ -183,17 +268,17 @@ const ArticleDetail = () => {
   }
 
   const amenityIcons: Record<string, React.ReactNode> = {
-    'khách': <Users size={18} />,
-    'Giường': <Bed size={18} />,
-    'Lều': <Bed size={18} />,
-    'nệm': <Bed size={18} />,
-    'Máy lạnh': <Wind size={18} />,
-    'Quạt': <Wind size={18} />,
-    'Wifi': <Wifi size={18} />,
-    'WC': <Bath size={18} />,
-    'Bữa sáng': <Coffee size={18} />,
-    'Minibar': <Coffee size={18} />,
-    'Bếp': <Coffee size={18} />,
+    khách: <Users size={18} />,
+    Giường: <Bed size={18} />,
+    Lều: <Bed size={18} />,
+    nệm: <Bed size={18} />,
+    "Máy lạnh": <Wind size={18} />,
+    Quạt: <Wind size={18} />,
+    Wifi: <Wifi size={18} />,
+    WC: <Bath size={18} />,
+    "Bữa sáng": <Coffee size={18} />,
+    Minibar: <Coffee size={18} />,
+    Bếp: <Coffee size={18} />,
   };
 
   const getAmenityIcon = (amenity: string) => {
@@ -206,7 +291,7 @@ const ArticleDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+
       <main>
         {/* Hero Image */}
         <section className="relative h-[60vh] md:h-[70vh] overflow-hidden">
@@ -215,26 +300,27 @@ const ArticleDetail = () => {
             alt={article.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
-          
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent pointer-events-none" />
+
           {/* Back button */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute top-28 left-6 md:left-12"
+            className="absolute top-28 left-6 md:left-12 z-20"
           >
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate("/dich-vu#luu-tru")}
-              className="text-white border-white/40 hover:bg-white/10 hover:border-white/60"
-            >
-              <ArrowLeft className="mr-2" size={16} />
-              Quay lại
-            </Button>
+            <Link to="/dich-vu#luu-tru" className="inline-block">
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-white border-white/40 hover:bg-white/10 hover:border-white/60 bg-transparent"
+              >
+                <ArrowLeft className="mr-2" size={16} />
+                Quay lại
+              </Button>
+            </Link>
           </motion.div>
-          
+
           {/* Title overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 lg:p-16">
             <div className="container-wide">
@@ -243,12 +329,16 @@ const ArticleDetail = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <span className="label-elegant text-accent mb-4 block">Lưu trú</span>
+                <span className="label-elegant text-accent mb-4 block">
+                  Lưu trú
+                </span>
                 <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4">
                   {article.name}
                 </h1>
-                <p className="text-white/80 text-lg max-w-2xl">{article.subtitle}</p>
-                
+                <p className="text-white/80 text-lg max-w-2xl">
+                  {article.subtitle}
+                </p>
+
                 <div className="flex flex-wrap items-center gap-4 mt-6">
                   <span className="flex items-center gap-2 text-white/70 text-sm">
                     <MapPin size={16} />
@@ -279,9 +369,11 @@ const ArticleDetail = () => {
                     Giới thiệu
                   </h2>
                   <div className="space-y-4 text-muted-foreground leading-relaxed">
-                    {(article.long_description || article.description || '').split('\n\n').map((paragraph, index) => (
-                      <p key={index}>{paragraph}</p>
-                    ))}
+                    {(article.long_description || article.description || "")
+                      .split("\n\n")
+                      .map((paragraph, index) => (
+                        <p key={index}>{paragraph}</p>
+                      ))}
                   </div>
                 </motion.div>
 
@@ -297,7 +389,10 @@ const ArticleDetail = () => {
                   </h2>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {article.highlights.map((highlight, index) => (
-                      <div key={index} className="flex items-center gap-3 text-foreground">
+                      <div
+                        key={index}
+                        className="flex items-center gap-3 text-foreground"
+                      >
                         <div className="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
                           <Check size={14} className="text-secondary" />
                         </div>
@@ -326,7 +421,9 @@ const ArticleDetail = () => {
                         <div className="text-primary">
                           {getAmenityIcon(amenity)}
                         </div>
-                        <span className="text-sm text-foreground">{amenity}</span>
+                        <span className="text-sm text-foreground">
+                          {amenity}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -362,12 +459,18 @@ const ArticleDetail = () => {
                     <div className="space-y-3 mb-8">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Sức chứa</span>
-                        <span className="font-medium text-foreground">{article.capacity}</span>
+                        <span className="font-medium text-foreground">
+                          {article.capacity}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Đánh giá</span>
                         <span className="font-medium text-foreground flex items-center gap-1">
-                          <Star size={14} className="text-accent" fill="currentColor" />
+                          <Star
+                            size={14}
+                            className="text-accent"
+                            fill="currentColor"
+                          />
                           {article.rating}/5
                         </span>
                       </div>

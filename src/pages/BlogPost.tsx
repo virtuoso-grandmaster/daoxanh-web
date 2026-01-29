@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { useBlogPost, useBlogPosts } from "@/hooks/useBlogPosts";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 
 import heroImage from "@/assets/hero-resort.jpg";
 import farmImage from "@/assets/services/nong-trai.jpg";
@@ -310,7 +313,9 @@ const BlogPost = () => {
 
               {/* Content */}
               <div className="prose prose-lg max-w-none">
-                {renderContent(post.content)}
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                  {post.content || ''}
+                </ReactMarkdown>
               </div>
 
               {/* CTA */}

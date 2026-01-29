@@ -10,9 +10,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Loader2, Save, Eye } from 'lucide-react';
+import { ArrowLeft, Loader2, Save, Eye, EyeOff } from 'lucide-react';
 import { z } from 'zod';
 import ImageUploader from '@/components/admin/ImageUploader';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from 'remark-breaks';
 
 const blogPostSchema = z.object({
   title: z.string().min(1, 'Tiêu đề không được để trống').max(200),
@@ -49,6 +52,7 @@ export default function BlogEditor() {
     published: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [viewMode, setViewMode] = useState<'editor' | 'preview' | 'split'>('editor');
 
   // Fetch existing post if editing
   const { data: existingPost, isLoading: loadingPost } = useQuery({
@@ -291,17 +295,176 @@ export default function BlogEditor() {
 
                 <div className="space-y-2">
                   <Label htmlFor="content">Nội dung bài viết</Label>
-                  <Textarea
-                    id="content"
-                    value={formData.content}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, content: e.target.value }))}
-                    placeholder="Viết nội dung bài viết ở đây... (hỗ trợ Markdown)"
-                    rows={15}
-                    className="font-mono text-sm"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Hỗ trợ định dạng Markdown. Mỗi đoạn văn cách nhau bằng dòng trống.
-                  </p>
+                  <div className="flex gap-2 mb-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setFormData((prev) => ({ ...prev, content: prev.content + '\n\n**Tiêu đề**\n\nNội dung đoạn văn...' }))}
+                    >
+                      Thêm mẫu
+                    </Button>
+                  </div>
+                  
+                  {/* View Toggle */}
+                  <div className="flex gap-2 mb-3">
+                    <Button
+                      type="button"
+                      variant={viewMode === 'editor' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setViewMode('editor')}
+                      className="text-xs"
+                    >
+                      Soạn thảo
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={viewMode === 'preview' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setViewMode('preview')}
+                      className="text-xs"
+                    >
+                      Xem trước
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={viewMode === 'split' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setViewMode('split')}
+                      className="text-xs"
+                    >
+                      Chia đôi
+                    </Button>
+                  </div>
+
+                  {viewMode === 'editor' && (
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <Label htmlFor="content" className="text-sm font-medium">Nội dung (Markdown)</Label>
+                        <div className="flex gap-1">
+                          {['**B**', '*I*', '# H1', '## H2', '- List', '`Code`'].map((format) => (
+                            <Button
+                              key={format}
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="text-xs px-2 py-1 h-auto"
+                              onClick={() => setFormData((prev) => ({ 
+                                ...prev, 
+                                content: prev.content + (prev.content ? '\n\n' : '') + format 
+                              }))}
+                            >
+                              {format}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      <Textarea
+                        id="content"
+                        value={formData.content}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, content: e.target.value }))}
+                        placeholder="Viết nội dung bài viết ở đây... (hỗ trợ Markdown)"
+                        rows={15}
+                        className="font-mono text-sm bg-background border border-input rounded-lg p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      />
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="text-xs text-muted-foreground">
+                          Hỗ trợ định dạng Markdown. Mỗi đoạn văn cách nhau bằng dòng trống.
+                        </p>
+                        <span className="text-xs text-muted-foreground">
+                          {formData.content.length} ký tự
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {viewMode === 'preview' && (
+                    <div className="border border-border rounded-lg p-4 bg-muted/50">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs font-medium text-muted-foreground">Xem trước</span>
+                        <div className="flex gap-2">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="text-xs px-2 py-1 h-auto"
+                            onClick={() => window.open(`/tin-tuc/${formData.slug || 'preview'}`, '_blank')}
+                          >
+                            Mở rộng
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="prose prose-lg max-w-none">
+                        <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                          {formData.content || 'Nội dung sẽ hiển thị ở đây...'}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  )}
+
+                  {viewMode === 'split' && (
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <Label htmlFor="content" className="text-sm font-medium">Nội dung (Markdown)</Label>
+                          <div className="flex gap-1">
+                            {['**B**', '*I*', '# H1', '## H2', '- List', '`Code`'].map((format) => (
+                              <Button
+                                key={format}
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="text-xs px-2 py-1 h-auto"
+                                onClick={() => setFormData((prev) => ({ 
+                                  ...prev, 
+                                  content: prev.content + (prev.content ? '\n\n' : '') + format 
+                                }))}
+                              >
+                                {format}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                        <Textarea
+                          id="content"
+                          value={formData.content}
+                          onChange={(e) => setFormData((prev) => ({ ...prev, content: e.target.value }))}
+                          placeholder="Viết nội dung bài viết ở đây... (hỗ trợ Markdown)"
+                          rows={15}
+                          className="font-mono text-sm bg-background border border-input rounded-lg p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                        />
+                        <div className="flex items-center justify-between mt-2">
+                          <p className="text-xs text-muted-foreground">
+                            Hỗ trợ định dạng Markdown. Mỗi đoạn văn cách nhau bằng dòng trống.
+                          </p>
+                          <span className="text-xs text-muted-foreground">
+                            {formData.content.length} ký tự
+                          </span>
+                        </div>
+                      </div>
+                      <div className="border border-border rounded-lg p-4 bg-muted/50">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-xs font-medium text-muted-foreground">Xem trước</span>
+                          <div className="flex gap-2">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="text-xs px-2 py-1 h-auto"
+                              onClick={() => window.open(`/tin-tuc/${formData.slug || 'preview'}`, '_blank')}
+                            >
+                              Mở rộng
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="prose prose-sm max-h-96 overflow-y-auto border border-border/50 rounded-lg p-4 bg-background">
+                          <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                            {formData.content || 'Nội dung sẽ hiển thị ở đây...'}
+                          </ReactMarkdown>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

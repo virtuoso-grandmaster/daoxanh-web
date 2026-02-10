@@ -37,16 +37,20 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Plus, Pencil, Trash2, Loader2, X, Package } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import ImageUploader from '@/components/admin/ImageUploader';
 
 interface ComboPackage {
   id: string;
   name: string;
   subtitle: string | null;
+  slug: string | null;
   price_adult: number;
   price_child: number | null;
   includes: string[];
+  image_url: string | null;
   display_order: number;
   published: boolean;
 }
@@ -54,9 +58,11 @@ interface ComboPackage {
 interface DayTripPackage {
   id: string;
   name: string;
+  slug: string | null;
   price_adult: number;
   price_child: number | null;
   includes: string[];
+  image_url: string | null;
   display_order: number;
   published: boolean;
 }
@@ -112,29 +118,33 @@ export default function PackageManager() {
           </TabsList>
 
           <TabsContent value="combo">
-            <PackageTable
-              title="Gói Combo 2 Ngày 1 Đêm"
-              description="Các gói nghỉ dưỡng combo"
-              packages={comboPackages || []}
-              isLoading={loadingCombo}
-              type="combo"
-              formatPrice={formatPrice}
-              queryClient={queryClient}
-              toast={toast}
-            />
+            <ScrollArea className="h-[calc(100vh-200px)]">
+              <PackageTable
+                title="Gói Combo 2 Ngày 1 Đêm"
+                description="Các gói nghỉ dưỡng combo"
+                packages={comboPackages || []}
+                isLoading={loadingCombo}
+                type="combo"
+                formatPrice={formatPrice}
+                queryClient={queryClient}
+                toast={toast}
+              />
+            </ScrollArea>
           </TabsContent>
 
           <TabsContent value="daytrip">
-            <PackageTable
-              title="Tour Trong Ngày"
-              description="Các gói tham quan trong ngày"
-              packages={dayTripPackages || []}
-              isLoading={loadingDayTrip}
-              type="daytrip"
-              formatPrice={formatPrice}
-              queryClient={queryClient}
-              toast={toast}
-            />
+            <ScrollArea className="h-[calc(100vh-200px)]">
+              <PackageTable
+                title="Tour Trong Ngày"
+                description="Các gói tham quan trong ngày"
+                packages={dayTripPackages || []}
+                isLoading={loadingDayTrip}
+                type="daytrip"
+                formatPrice={formatPrice}
+                queryClient={queryClient}
+                toast={toast}
+              />
+            </ScrollArea>
           </TabsContent>
         </Tabs>
       </div>
@@ -326,6 +336,7 @@ function PackageDialog({ type, package: pkg, isOpen, setIsOpen, queryClient, toa
     price_adult: pkg?.price_adult || 0,
     price_child: pkg?.price_child || 0,
     includes: pkg?.includes || [],
+    image_url: pkg?.image_url || '',
     display_order: pkg?.display_order || 0,
     published: pkg?.published ?? true,
   });
@@ -372,6 +383,7 @@ function PackageDialog({ type, package: pkg, isOpen, setIsOpen, queryClient, toa
       price_adult: 0,
       price_child: 0,
       includes: [],
+      image_url: '',
       display_order: 0,
       published: true,
     });
@@ -404,6 +416,7 @@ function PackageDialog({ type, package: pkg, isOpen, setIsOpen, queryClient, toa
         price_adult: pkg.price_adult || 0,
         price_child: pkg.price_child || 0,
         includes: pkg.includes || [],
+        image_url: pkg.image_url || '',
         display_order: pkg.display_order || 0,
         published: pkg.published ?? true,
       });
@@ -420,7 +433,7 @@ function PackageDialog({ type, package: pkg, isOpen, setIsOpen, queryClient, toa
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>
             {isEditing ? 'Chỉnh sửa gói dịch vụ' : 'Thêm gói dịch vụ mới'}
@@ -429,7 +442,8 @@ function PackageDialog({ type, package: pkg, isOpen, setIsOpen, queryClient, toa
             {type === 'combo' ? 'Gói combo 2 ngày 1 đêm' : 'Tour trong ngày'}
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
+        <ScrollArea className="flex-1 max-h-[60vh] pr-4">
+          <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="pkg-name">Tên gói *</Label>
             <Input
@@ -506,6 +520,14 @@ function PackageDialog({ type, package: pkg, isOpen, setIsOpen, queryClient, toa
               ))}
             </div>
           </div>
+          <div className="space-y-2">
+            <Label>Hình ảnh</Label>
+            <ImageUploader
+              value={formData.image_url || ''}
+              onChange={(url) => setFormData((prev) => ({ ...prev, image_url: url }))}
+              folder="packages"
+            />
+          </div>
           <div className="flex items-center justify-between">
             <Label htmlFor="pkg-published">Hiển thị</Label>
             <Switch
@@ -517,7 +539,7 @@ function PackageDialog({ type, package: pkg, isOpen, setIsOpen, queryClient, toa
             />
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="mt-6">
           <Button variant="outline" onClick={() => setIsOpen(false)}>
             Hủy
           </Button>
@@ -532,6 +554,8 @@ function PackageDialog({ type, package: pkg, isOpen, setIsOpen, queryClient, toa
             )}
           </Button>
         </DialogFooter>
+        </ScrollArea>
+        
       </DialogContent>
     </Dialog>
   );

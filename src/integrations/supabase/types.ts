@@ -135,6 +135,7 @@ export type Database = {
           id: string
           includes: Json | null
           name: string
+          slug: string | null
           price_adult: number
           price_child: number | null
           published: boolean | null
@@ -147,6 +148,7 @@ export type Database = {
           id?: string
           includes?: Json | null
           name: string
+          slug?: string | null
           price_adult: number
           price_child?: number | null
           published?: boolean | null
@@ -159,6 +161,7 @@ export type Database = {
           id?: string
           includes?: Json | null
           name?: string
+          slug?: string | null
           price_adult?: number
           price_child?: number | null
           published?: boolean | null
@@ -174,6 +177,7 @@ export type Database = {
           id: string
           includes: Json | null
           name: string
+          slug: string | null
           price_adult: number
           price_child: number | null
           published: boolean | null
@@ -185,6 +189,7 @@ export type Database = {
           id?: string
           includes?: Json | null
           name: string
+          slug?: string | null
           price_adult: number
           price_child?: number | null
           published?: boolean | null
@@ -196,6 +201,7 @@ export type Database = {
           id?: string
           includes?: Json | null
           name?: string
+          slug?: string | null
           price_adult?: number
           price_child?: number | null
           published?: boolean | null

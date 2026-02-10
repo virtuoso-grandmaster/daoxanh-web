@@ -11,7 +11,7 @@ interface PageSEOProps {
   structuredData?: object;
 }
 
-const BASE_URL = "https://daoxanh-ecoo.lovable.app";
+const BASE_URL = "https://daoxanh.com.vn";
 const DEFAULT_IMAGE = "/og-default.jpg";
 const SITE_NAME = "Đảo Xanh Ecofarm";
 

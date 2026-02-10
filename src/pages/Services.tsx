@@ -22,8 +22,9 @@ import { useComboPackages, useDayTripPackages } from "@/hooks/usePackages";
 import { PageSEO, getServicesSchema } from "@/components/seo/PageSEO";
 
 import accommodationImage from "@/assets/services/nghi-duong.jpg";
-import farmImage from "@/assets/services/nong-trai.jpg";
 import cuisineImage from "@/assets/services/am-thuc.jpg";
+import teambuilding from "@/assets/services/ngoai-troi.jpg"
+import ecofarmImage from "@/assets/hero-resort.jpg";
 
 // Import hình ảnh từng loại lưu trú (for fallback)
 import lanLaHanhNgoImage from "@/assets/accommodation/lan-la-hanh-ngo.jpg";
@@ -86,6 +87,7 @@ const staticComboPackages = [
       "Trải nghiệm nông trại",
       "Tham quan vườn",
     ],
+    img_url: ecofarmImage,
   },
   {
     name: "Gói A1",
@@ -99,6 +101,7 @@ const staticComboPackages = [
       "Bữa trưa",
       "Trải nghiệm nông trại",
     ],
+    img_url: ecofarmImage,
   },
   {
     name: "Gói A2",
@@ -112,6 +115,7 @@ const staticComboPackages = [
       "Trải nghiệm VIP",
       "BBQ tối",
     ],
+    img_url: ecofarmImage,
   },
 ];
 
@@ -127,6 +131,7 @@ const staticDayTripPackages = [
       "Cho cá ăn",
       "Check-in cảnh đẹp",
     ],
+    img_url: "@/assets/hero-resort.jpg",
   },
   {
     name: "Gói A1 - Nông trại 5 sao",
@@ -561,7 +566,7 @@ const Services = () => {
                 >
                   <div className="rounded-3xl overflow-hidden shadow-elevated">
                     <img
-                      src={farmImage}
+                      src={teambuilding}
                       alt="Trải nghiệm trong ngày"
                       className="w-full h-[450px] lg:h-[550px] object-cover"
                     />
@@ -758,7 +763,7 @@ const Services = () => {
                 >
                   <div className="rounded-3xl overflow-hidden shadow-elevated">
                     <img
-                      src={farmImage}
+                      src={ecofarmImage}
                       alt="Nông trại Đảo Xanh"
                       className="w-full h-[450px] lg:h-[550px] object-cover"
                     />

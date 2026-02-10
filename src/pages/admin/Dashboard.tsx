@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { FileText, Home, Package, Plus, Loader2 } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function Dashboard() {
   const { data: blogCount, isLoading: loadingBlog } = useQuery({

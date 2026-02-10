@@ -9,6 +9,7 @@ export interface ComboPackage {
   price_adult: number;
   price_child: number | null;
   includes: string[];
+  image_url: string | null;
   display_order: number;
   published: boolean;
   created_at: string;
@@ -22,6 +23,7 @@ export interface DayTripPackage {
   price_adult: number;
   price_child: number | null;
   includes: string[];
+  image_url: string | null;
   display_order: number;
   published: boolean;
   created_at: string;

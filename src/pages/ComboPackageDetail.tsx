@@ -134,9 +134,12 @@ const ComboPackageDetail = () => {
                 >
                   <div className="rounded-3xl overflow-hidden shadow-elevated">
                     <img 
-                      src={accommodationImage} 
+                      src={pkg.image_url || accommodationImage} 
                       alt={pkg.name}
                       className="w-full h-[400px] lg:h-[500px] object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = accommodationImage;
+                      }}
                     />
                   </div>
                 </motion.div>

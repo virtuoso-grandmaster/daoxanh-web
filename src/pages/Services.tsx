@@ -584,7 +584,7 @@ const Services = () => {
                   </span>
                   <h2 className="heading-section text-foreground mb-8">
                     Khám phá{" "}
-                    <span className="italic text-primary">nông trại</span>
+                    <span className="italic text-primary">trải nghiệm</span>
                   </h2>
                   <p className="body-regular text-muted-foreground mb-10 leading-relaxed">
                     Không cần nghỉ lại, vẫn có thể trải nghiệm đầy đủ cuộc sống
